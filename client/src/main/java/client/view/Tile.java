@@ -3,9 +3,9 @@
  * This class represents the individual tile on the board which contains the
  * character, their position, points of the tile, and premium points.
  */
-package client.model;
+package client.view;
 
-import javafx.scene.Cursor;
+import client.model.Pos;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -45,8 +45,15 @@ public class Tile extends StackPane {
         label.setFill(Color.WHITE);
 
         if (multiplier.equals(Board.MULTIPLIER.NO)) {
-            background.setFill(Board.TileColor.NO);
-            label.setText(" ");
+
+            if (data != '0') {
+                label.setText(String.valueOf(data));
+                background.setFill(Color.BLACK);
+            } else {
+                label.setText(" ");
+                background.setFill(Board.TileColor.NO);
+            }
+
         } else if (multiplier.equals(Board.MULTIPLIER.TW)) {
             background.setFill(Board.TileColor.TW);
         } else if (multiplier.equals(Board.MULTIPLIER.DW)) {

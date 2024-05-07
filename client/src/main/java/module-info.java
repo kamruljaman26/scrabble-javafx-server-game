@@ -6,4 +6,6 @@ module client {
     exports client;
     exports client.model;
     opens client.model to javafx.fxml;
+    exports client.view;
+    opens client.view to javafx.fxml;
 }

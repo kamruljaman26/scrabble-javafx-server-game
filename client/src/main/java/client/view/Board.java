@@ -3,20 +3,15 @@
  * This class represents the board that can be used for
  * putting tiles (letters) to play the game.
  */
-package client.model;
+package client.view;
 
+import client.model.Pos;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static client.model.Board.MULTIPLIER.*;
+import static client.view.Board.MULTIPLIER.*;
 
 public class Board extends GridPane {
 
@@ -39,7 +34,7 @@ public class Board extends GridPane {
         public static Color TW = Color.RED;
         public static Color DW = Color.PALEVIOLETRED;
         public static Color TL = Color.BLUE;
-        public static Color DL = Color.valueOf("#7EC8E3");
+        public static Color DL = Color.valueOf("#5252a1");
         public static Color NO = Color.valueOf("#bfc1d6");
         public static Color TILE = Color.valueOf("#000C66");
     }
@@ -57,7 +52,7 @@ public class Board extends GridPane {
                 // Create TileView
                 tilesGrid[row][col] = new Tile(this,
                         getMultiplier()[row][col],
-                        'c',
+                        '0',
                         5,
                         new Pos(row, col)
                 );
