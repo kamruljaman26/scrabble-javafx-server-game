@@ -46,6 +46,7 @@ public class Tile extends StackPane {
 
         if (multiplier.equals(Board.MULTIPLIER.NO)) {
             background.setFill(Board.TileColor.NO);
+            label.setText(" ");
         } else if (multiplier.equals(Board.MULTIPLIER.TW)) {
             background.setFill(Board.TileColor.TW);
         } else if (multiplier.equals(Board.MULTIPLIER.DW)) {
@@ -63,6 +64,7 @@ public class Tile extends StackPane {
     }
 
     private void setupDragAndDrop() {
+
         this.setOnDragDetected(event -> {
             Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
@@ -81,6 +83,7 @@ public class Tile extends StackPane {
 
         this.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
+
             if (db.hasString()) {
                 String[] indices = db.getString().split(",");
                 int sourceRow = Integer.parseInt(indices[0]);

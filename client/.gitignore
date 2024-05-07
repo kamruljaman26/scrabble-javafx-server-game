@@ -36,21 +36,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-target/
-*.class
-*.jar
-*.war
-*.ear
-*.logs
-*.iml
-.idea/
-.eclipse
-
-# ignore everything ...
-/*
-# ... but the following
-!/.profile
-!/.bash_rc
-!/.bash_profile
-!/.curlrc

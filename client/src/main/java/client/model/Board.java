@@ -5,12 +5,20 @@
  */
 package client.model;
 
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static client.model.Board.MULTIPLIER.*;
 
-public class Board {
+public class Board extends GridPane {
 
     /**
      * This enum is used to represent the premium tiles which
@@ -24,21 +32,40 @@ public class Board {
         NO;
     }
 
+    /**
+     *
+     */
     public static class TileColor {
         public static Color TW = Color.RED;
         public static Color DW = Color.PALEVIOLETRED;
         public static Color TL = Color.BLUE;
         public static Color DL = Color.valueOf("#7EC8E3");
-        public static Color NO = Color.valueOf("#000C66");
+        public static Color NO = Color.valueOf("#bfc1d6");
+        public static Color TILE = Color.valueOf("#000C66");
     }
 
-    private int size;
-    private Tile[][] tile;
+    private final Tile[][] tilesGrid;
+    private final int SIZE = 15; // fixed size for multiplayer board
 
-    public Board(int size) {
-        this.size = size;
-        this.tile = new Tile[size][size];
+    public Board() {
+        this.tilesGrid = new Tile[SIZE][SIZE];
 
+        // Creating the board
+        for (int row = 0; row < 15; row++) {
+            for (int col = 0; col < 15; col++) {
+
+                // Create TileView
+                tilesGrid[row][col] = new Tile(this,
+                        getMultiplier()[row][col],
+                        'c',
+                        5,
+                        new Pos(row, col)
+                );
+
+                GridPane.setMargin(tilesGrid[row][col], new Insets(1.5));
+                add(tilesGrid[row][col], col, row);
+            }
+        }
     }
 
     /**
@@ -50,8 +77,8 @@ public class Board {
      */
     public List<Pos> validPosition() {
         List<Pos> validPosition = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 Pos pos = new Pos(i, j);
                 validPosition.add(pos);
             }
@@ -67,7 +94,7 @@ public class Board {
      * @return Tile
      */
     public Tile getTile(int row, int col) {
-        return tile[row][col];
+        return tilesGrid[row][col];
     }
 
     /**
@@ -77,7 +104,7 @@ public class Board {
      * @return Tile
      */
     public Tile getTile(Pos pos) {
-        return tile[pos.getX()][pos.getY()];
+        return tilesGrid[pos.getX()][pos.getY()];
     }
 
     /**
@@ -88,7 +115,7 @@ public class Board {
      * @param col
      */
     public void setTile(Tile addTile, int row, int col) {
-        this.tile[row][col] = addTile;
+        this.tilesGrid[row][col] = addTile;
     }
 
     /**
@@ -98,7 +125,7 @@ public class Board {
      * @param pos
      */
     public void setTile(Tile addTile, Pos pos) {
-        this.tile[pos.getX()][pos.getY()] = addTile;
+        this.tilesGrid[pos.getX()][pos.getY()] = addTile;
     }
 
     /**
@@ -109,8 +136,8 @@ public class Board {
      * @return boolean
      */
     public boolean tileInBound(Pos pos) {
-        if (pos.getX() >= 0 && pos.getX() < size &&
-                pos.getY() >= 0 && pos.getY() < size) {
+        if (pos.getX() >= 0 && pos.getX() < SIZE &&
+                pos.getY() >= 0 && pos.getY() < SIZE) {
             return true;
         }
         return false;
@@ -125,8 +152,8 @@ public class Board {
      * @return boolean
      */
     public boolean tileInBound(int col, int row) {
-        if (row >= 0 && row < size &&
-                col >= 0 && col < size) {
+        if (row >= 0 && row < SIZE &&
+                col >= 0 && col < SIZE) {
             return true;
         }
         return false;
@@ -138,7 +165,7 @@ public class Board {
      * @return int
      */
     public int getSize() {
-        return size;
+        return SIZE;
     }
 
     /**
@@ -170,7 +197,7 @@ public class Board {
         return true;
     }
 
-/*    *//**
+    /*    *//**
      * This function is helpful in printing the board in the terminal.
      *
      * @return
