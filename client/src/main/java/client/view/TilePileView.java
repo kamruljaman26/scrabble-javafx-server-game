@@ -4,13 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -54,6 +49,7 @@ public class TilePileView extends HBox {
         getChildren().addAll(shuffleBtn, sortBtn);
     }
 
+    // refresh pile view
     public void refreshTilePile() {
         tileViews.forEach(tileView -> {
             getChildren().remove(tileView);
@@ -65,6 +61,10 @@ public class TilePileView extends HBox {
 
     // add title on tile pile
     public void addTile(TileView tileView) {
+
+        // can't add more than 7 tiles
+        if (tileViews.size() >= 7) return;
+
         tileView.setOnDragDetected(event -> {
             /* Allow any transfer mode */
             tileView.startDragAndDrop(javafx.scene.input.TransferMode.ANY);
@@ -91,9 +91,15 @@ public class TilePileView extends HBox {
         getChildren().add(tileView);
     }
 
+    // remove tile from view and list
     public void removeTile(TileView tileView) {
+
         tileViews.remove(tileView);
         getChildren().remove(tileView);
+    }
+
+    public ObservableList<TileView> getTileViews() {
+        return tileViews;
     }
 
     // create stylish button

@@ -30,9 +30,6 @@ public class BoardView extends GridPane {
         NO;
     }
 
-    /**
-     *
-     */
     public static class TileColor {
         public static Color TW = Color.RED;
         public static Color DW = Color.PALEVIOLETRED;

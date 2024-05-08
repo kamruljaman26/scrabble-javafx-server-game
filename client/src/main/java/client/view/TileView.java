@@ -36,6 +36,11 @@ public class TileView extends StackPane {
         this.pos = pos;
         this.grid = grid;
 
+        initLayoutView();
+    }
+
+    // init layout view
+    private void initLayoutView() {
         background = new Rectangle(35, 35);
         background.setArcWidth(10);
         background.setArcHeight(10);

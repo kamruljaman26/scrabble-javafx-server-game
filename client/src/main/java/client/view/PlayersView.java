@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  */
 public class PlayersView extends VBox {
 
-    private ObservableList<Player> players;
+    private final ObservableList<Player> players;
     private TextArea logArea;  // TextArea to display logs or additional information
 
     public PlayersView(ObservableList<Player> players) {
@@ -31,6 +31,7 @@ public class PlayersView extends VBox {
         initTextArea();
     }
 
+    // init player view section
     private void initPlayerViews() {
         players.forEach(p -> {
             HBox playerBox = new HBox(20);

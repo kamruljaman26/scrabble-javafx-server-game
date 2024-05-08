@@ -12,58 +12,92 @@ import javafx.scene.paint.Color;
 public class GameView extends HBox {
 
     private final TilePileView tilesPile;
+    private final ObservableList<Player> players;
+    private final PlayersView playersView;
+    private final BoardView boardView;
 
     public GameView() {
+        // init views
+        boardView = new BoardView();
+        players = FXCollections.observableArrayList();
+        tilesPile = new TilePileView();
+        addDemoData();
+        playersView = new PlayersView(players);
+
+        initGameViewLayout();
+    }
+
+    // init layout and button view and handler
+    private void initGameViewLayout() {
         // Root layout
         VBox root = new VBox(10);
         root.setBackground(new Background(new BackgroundFill(Color.valueOf("#DDDDDD"),
                 CornerRadii.EMPTY, new Insets(0))));
 
-        /*
-         * Board
-         */
-        BoardView boardView = new BoardView();
+        // Control buttons
+        Button btnResign = createStyledButton("Resign");
+        Button btnSkip = createStyledButton("Skip");
+        Button btnSwap = createStyledButton("Swap");
+        Button btnSubmit = createStyledButton("Submit");
+
+        btnResign.setOnAction(actionEvent -> resignButtonAction());
+        btnSkip.setOnAction(actionEvent -> skipButtonAction());
+        btnSwap.setOnAction(actionEvent -> swapButtonAction());
+        btnSubmit.setOnAction(actionEvent -> submitButtonAction());
+
+        // Adding to root
+        HBox controlButtons = new HBox(10);
+        controlButtons.setAlignment(javafx.geometry.Pos.CENTER);
+        controlButtons.getChildren().addAll(btnResign, btnSkip, btnSwap, btnSubmit);
+        root.getChildren().addAll(boardView, tilesPile, controlButtons);
+        getChildren().addAll(root, playersView);
+    }
+
+    /**
+     * Handle Resign button action
+     */
+    private void resignButtonAction() {
+        //todo
+    }
+
+    /**
+     * Handle Skip button action
+     */
+    private void skipButtonAction() {
+
+    }
+
+    /**
+     * Handle Swap button action
+     */
+    private void swapButtonAction() {
+        addDemoData();
+    }
+
+    /**
+     * Handle Submit button action
+     */
+    private void submitButtonAction() {
+        // todo
+    }
+
+    private void addDemoData() {
+        players.add(new Player("12", "12", 12, 12, "Jhon Due"));
+        players.add(new Player("12", "12", 12, 12, "Lactor"));
+
+        if(playersView != null)
+            playersView.appendLog("This os log section");
 
         /*
          * Create TileBox
          */
         TileView tileView = new TileView(boardView, BoardView.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
         TileView tileView2 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
-
-        // create and int tile pile
-        tilesPile = new TilePileView();
         tilesPile.addTile(tileView);
         tilesPile.addTile(tileView2);
-
-        // Control buttons
-        HBox controlButtons = new HBox(10);
-        controlButtons.setAlignment(javafx.geometry.Pos.CENTER);
-        Button btnResign = createStyledButton("Resign");
-        Button btnSkip = createStyledButton("Skip");
-        Button btnSwap = createStyledButton("Swap");
-        Button btnSubmit = createStyledButton("Submit");
-        controlButtons.getChildren().addAll(btnResign, btnSkip, btnSwap, btnSubmit);
-
-        btnSubmit.setOnAction(actionEvent -> {
-            TileView tileView3 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
-            TileView tileView4 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
-            tilesPile.addTile(tileView3);
-            tilesPile.addTile(tileView4);
-        });
-
-        // Create Player View
-        //    public Player(String id, String serverIpAddress, int serverPort, int listeningPort, String name) {
-        ObservableList<Player> players = FXCollections.observableArrayList();
-        players.add(new Player("12", "12", 12, 12, "Jhon Due"));
-        players.add(new Player("12", "12", 12, 12, "Lactor"));
-        PlayersView playersView = new PlayersView(players);
-        playersView.appendLog("This os log section");
-
-        // Adding to root
-        root.getChildren().addAll(boardView, tilesPile, controlButtons);
-        getChildren().addAll(root, playersView);
     }
 
+    // create stylish button
     public Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setMinWidth(120);
