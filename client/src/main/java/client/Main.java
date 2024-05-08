@@ -21,7 +21,6 @@ public class Main extends Application {
         Main.stage = primaryStage;
 
         // Show stage
-//        Scene scene = new Scene(new Start(stage), 573, 850);
         Scene scene = new Scene(new Start(stage), 600, 600);
         primaryStage.setTitle("Scrabble Board");
         primaryStage.setScene(scene);

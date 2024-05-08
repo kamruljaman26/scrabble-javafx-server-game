@@ -89923,7 +89923,7 @@ melts
 meltwater
 meltwaters
 mem
-member
+player
 membered
 members
 membership
@@ -90447,7 +90447,7 @@ mesquite
 mesquites
 mesquits
 mess
-message
+command
 messaged
 messages
 messaging

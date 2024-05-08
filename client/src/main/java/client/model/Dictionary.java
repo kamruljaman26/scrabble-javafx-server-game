@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class Dictonary {
+public class Dictionary {
 
     private TrieNode root;
     private String filename;
@@ -22,7 +22,7 @@ public class Dictonary {
      * @param filename- Valid words file
      * @throws FileNotFoundException
      */
-    public Dictonary(String filename) throws FileNotFoundException {
+    public Dictionary(String filename) throws FileNotFoundException {
         this.filename = filename;
         reader = new FileReader(filename);
         root = new TrieNode();

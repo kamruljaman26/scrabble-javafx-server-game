@@ -129,16 +129,16 @@ public class Start extends VBox {
         button.setMinWidth(120);
         button.setMinHeight(40);
         button.setMaxHeight(40);
-        button.setStyle("-fx-background-color: RED; " +    // Base color
+        button.setStyle("-fx-background-color: BLACK; " +    // Base color
                 "-fx-background-radius: 5; " +      // Rounded corners
                 "-fx-text-fill: white;");            // Text color
 
         // Change style on hover using CSS pseudo-class
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: white; " +
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: RED; " +
                 "-fx-background-radius: 5; " +
                 "-fx-text-fill: black;"));
 
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: RED; " +
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: BLACK; " +
                 "-fx-background-radius: 5; " +
                 "-fx-text-fill: white;"));
 
