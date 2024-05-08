@@ -7,10 +7,16 @@ package client.view;
 
 import client.model.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static client.view.BoardView.MULTIPLIER.*;
 
 public class BoardView extends GridPane {
@@ -58,10 +64,48 @@ public class BoardView extends GridPane {
                 );
 
                 GridPane.setMargin(tilesGrid[row][col], new Insets(1.5));
+
+                enableDropNode(tilesGrid[row][col], row, col);
+
                 add(tilesGrid[row][col], col, row);
             }
         }
+
     }
+
+    private void enableDropNode(TileView tileView, int row, int col) {
+        tileView.setOnDragOver(event -> {
+            /* Accept it only if it is not being dragged from the same node
+             * and if it has a string data */
+            if (event.getGestureSource() != tileView && event.getDragboard().hasString()) {
+                /* Allow for moving */
+                event.acceptTransferModes(javafx.scene.input.TransferMode.MOVE);
+            }
+
+            event.consume();
+        });
+
+        tileView.setOnDragDropped(event -> {
+
+            /* Data dropped */
+            /* If there is a string data on dragboard, read it and use it */
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                System.out.println(db.getString());
+                tilesGrid[row][col] =  new TileView(this, NO, db.getString().toCharArray()[0], 12, new Pos(1, 1));;
+                add(tilesGrid[row][col], col, row);
+                success = true;
+            }
+
+            /* Let the source know whether the string was successfully
+             * transferred and used */
+            event.setDropCompleted(success);
+
+            event.consume();
+        });
+    }
+
 
     /**
      * This function returns the list of all the valid

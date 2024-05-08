@@ -2,6 +2,10 @@ package client.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -51,6 +55,28 @@ public class TilePileView extends HBox {
 
     public void addTile(TileView tileView) {
         tileViews.add(tileView);
+        tileView.setOnDragDetected(event -> {
+            /* Allow any transfer mode */
+            tileView.startDragAndDrop(javafx.scene.input.TransferMode.ANY);
+
+            /* Put a string on the drag board */
+            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+            content.putString(tileView.getData() + "");
+            tileView.startDragAndDrop(javafx.scene.input.TransferMode.MOVE).setContent(content);
+
+            event.consume();
+        });
+
+        tileView.setOnDragDone(event -> {
+            /* the drag and drop gesture ended */
+            /* if the data was successfully moved, clear it */
+            if (event.getTransferMode() == javafx.scene.input.TransferMode.MOVE) {
+                removeTile(tileView);
+            }
+
+            event.consume();
+        });
+
         getChildren().add(tileView);
     }
 

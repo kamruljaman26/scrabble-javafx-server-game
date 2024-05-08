@@ -66,65 +66,7 @@ public class TileView extends StackPane {
 
         this.getChildren().addAll(background, label);
         StackPane.setAlignment(label, javafx.geometry.Pos.CENTER);
-
-        setupDragAndDrop();
     }
-
-    private void setupDragAndDrop() {
-
-        this.setOnDragDetected(event -> {
-            Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            // Store the indices as part of the drag content
-            content.putString(GridPane.getRowIndex(this) + "," + GridPane.getColumnIndex(this));
-            db.setContent(content);
-            event.consume();
-        });
-
-        this.setOnDragOver(event -> {
-            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        this.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-
-            if (db.hasString()) {
-                String[] indices = db.getString().split(",");
-                int sourceRow = Integer.parseInt(indices[0]);
-                int sourceCol = Integer.parseInt(indices[1]);
-
-                Node sourceNode = getNodeByRowColumnIndex(sourceRow, sourceCol, grid);
-                int targetRow = GridPane.getRowIndex(this);
-                int targetCol = GridPane.getColumnIndex(this);
-
-                // Swap the nodes
-                grid.getChildren().remove(this);
-                grid.getChildren().remove(sourceNode);
-
-                grid.add(this, sourceCol, sourceRow);
-                grid.add(sourceNode, targetCol, targetRow);
-
-                event.setDropCompleted(true);
-                event.consume();
-            }
-        });
-    }
-
-    // Helper to find a node by its grid position
-    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        Node result = null;
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-        return result;
-    }
-
 
     /**
      * This function returns the position of the tile in the board.
@@ -187,5 +129,33 @@ public class TileView extends StackPane {
      */
     public void setPos(Pos pos) {
         this.pos = pos;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setBackground(Rectangle background) {
+        this.background = background;
+    }
+
+    public Text getLabel() {
+        return label;
+    }
+
+    public void setLabel(Text label) {
+        this.label = label;
+    }
+
+    public GridPane getGrid() {
+        return grid;
+    }
+
+    public void setGrid(GridPane grid) {
+        this.grid = grid;
     }
 }
