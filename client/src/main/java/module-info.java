@@ -8,4 +8,6 @@ module client {
     opens client.model to javafx.fxml;
     exports client.view;
     opens client.view to javafx.fxml;
+    exports client.server;
+    opens client.server to javafx.fxml;
 }

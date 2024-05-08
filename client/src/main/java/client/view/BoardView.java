@@ -7,10 +7,7 @@ package client.view;
 
 import client.model.Pos;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -25,7 +22,7 @@ public class BoardView extends GridPane {
      * This enum is used to represent the premium tiles which
      * can multiply words or letters.
      */
-    public static enum MULTIPLIER {
+    public enum MULTIPLIER {
         TW,
         DW,
         DL,
@@ -42,7 +39,6 @@ public class BoardView extends GridPane {
         public static Color TL = Color.BLUE;
         public static Color DL = Color.valueOf("#5252a1");
         public static Color NO = Color.valueOf("#bfc1d6");
-        public static Color TILE = Color.valueOf("#000C66");
     }
 
     private final TileView[][] tilesGrid;
@@ -51,7 +47,12 @@ public class BoardView extends GridPane {
     public BoardView() {
         this.tilesGrid = new TileView[SIZE][SIZE];
 
-        // Creating the board
+        initBoardView();
+    }
+
+    // init board view
+    private void initBoardView() {
+        // init board view
         for (int row = 0; row < 15; row++) {
             for (int col = 0; col < 15; col++) {
 
@@ -70,13 +71,14 @@ public class BoardView extends GridPane {
                 add(tilesGrid[row][col], col, row);
             }
         }
-
     }
 
+    // enable drop tile functionality,
+    // todo: add condition for selected cell, if he can place the tile or not.
     private void enableDropNode(TileView tileView, int row, int col) {
         tileView.setOnDragOver(event -> {
             /* Accept it only if it is not being dragged from the same node
-             * and if it has a string data */
+             * and if it has string data */
             if (event.getGestureSource() != tileView && event.getDragboard().hasString()) {
                 /* Allow for moving */
                 event.acceptTransferModes(javafx.scene.input.TransferMode.MOVE);
@@ -85,15 +87,17 @@ public class BoardView extends GridPane {
             event.consume();
         });
 
+        /* Data dropped */
         tileView.setOnDragDropped(event -> {
 
-            /* Data dropped */
-            /* If there is a string data on dragboard, read it and use it */
+            // todo: implement data logic
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                System.out.println(db.getString());
-                tilesGrid[row][col] =  new TileView(this, NO, db.getString().toCharArray()[0], 12, new Pos(1, 1));;
+                char c = db.getString().split(",")[0].toCharArray()[0];
+                int s = Integer.parseInt(db.getString().split(",")[1]);
+                tilesGrid[row][col] = new TileView(this, NO, db.getString().toCharArray()[0],
+                        12, new Pos(1, 1));
                 add(tilesGrid[row][col], col, row);
                 success = true;
             }
@@ -236,29 +240,6 @@ public class BoardView extends GridPane {
         return true;
     }
 
-    /*    *//**
-     * This function is helpful in printing the board in the terminal.
-     *
-     * @return
-     *//*
-    public String toString() {
-        StringBuilder build = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (tile[i][j].getData() == '\0') {
-                    if (j == size - 1) {
-                        build.append(tile[i][j].getValue());
-                    } else {
-                        build.append(tile[i][j].getValue() + " ");
-                    }
-                } else {
-                    build.append(" " + tile[i][j].getData() + " ");
-                }
-            }
-            build.append('\n');
-        }
-        return build.toString();
-    }*/
 
     /**
      * This function returns the enum multiplier of each tile.

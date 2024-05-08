@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 
 public class GameView extends HBox {
 
+    private final TilePileView tilesPile;
+
     public GameView() {
         // Root layout
         VBox root = new VBox(10);
@@ -29,7 +31,7 @@ public class GameView extends HBox {
         TileView tileView2 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
 
         // create and int tile pile
-        TilePileView tilesPile = new TilePileView();
+        tilesPile = new TilePileView();
         tilesPile.addTile(tileView);
         tilesPile.addTile(tileView2);
 
@@ -41,6 +43,13 @@ public class GameView extends HBox {
         Button btnSwap = createStyledButton("Swap");
         Button btnSubmit = createStyledButton("Submit");
         controlButtons.getChildren().addAll(btnResign, btnSkip, btnSwap, btnSubmit);
+
+        btnSubmit.setOnAction(actionEvent -> {
+            TileView tileView3 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
+            TileView tileView4 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
+            tilesPile.addTile(tileView3);
+            tilesPile.addTile(tileView4);
+        });
 
         // Create Player View
         //    public Player(String id, String serverIpAddress, int serverPort, int listeningPort, String name) {

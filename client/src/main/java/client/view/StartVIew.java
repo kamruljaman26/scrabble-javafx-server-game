@@ -12,17 +12,26 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javafx.application.Platform;
 
 public class StartVIew extends VBox {
 
-    private boolean isHuman; // True if playing with human, false if playing with computer
+    private static boolean isHuman; // True if playing with human, false if playing with computer
     private Timer timer;
     private int seconds = 3;
 
+    // starting point
     public StartVIew(Stage stage) {
+        initStartView(stage);
+
+    }
+
+    // init design part
+    private void initStartView(Stage stage) {
         // Load and set the background image
         BackgroundImage myBI = new BackgroundImage(new Image("background.png", 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -43,6 +52,39 @@ public class StartVIew extends VBox {
         this.setAlignment(Pos.CENTER);
     }
 
+    private void showGameModeSelectionDialog(Stage stage) {
+        Dialog<Boolean> dialog = new Dialog<>();
+        dialog.initOwner(stage);
+        dialog.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
+        dialog.setTitle("Select Game Mode");
+
+        VBox dialogVBox = new VBox(10);
+        Button playWithComputer = createStyledButton("Play with Computer");
+        Button playWithHuman = createStyledButton("Play with Human");
+
+        playWithComputer.setOnAction(e -> {
+            isHuman = false;
+            dialog.setResult(false);
+            dialog.close();
+            showLoadingDialog(stage);
+        });
+
+        playWithHuman.setOnAction(e -> {
+            isHuman = true;
+            dialog.setResult(true);
+            dialog.close();
+            showLoadingDialog(stage);
+        });
+
+        dialogVBox.getChildren().addAll(new Text("Choose your game mode:"), playWithComputer, playWithHuman);
+        dialog.getDialogPane().setContent(dialogVBox);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+
+        dialog.showAndWait(); // Show and wait for user action
+    }
+
+    // show loading screen
+    // todo: join in server, wai
     private void showLoadingDialog(Stage stage) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.initOwner(stage);
@@ -84,44 +126,14 @@ public class StartVIew extends VBox {
         timer.scheduleAtFixedRate(task, 1000, 1000); // Schedule the task to run starting now and then every second...
     }
 
-    private void showGameModeSelectionDialog(Stage stage) {
-        Dialog<Boolean> dialog = new Dialog<>();
-        dialog.initOwner(stage);
-        dialog.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
-        dialog.setTitle("Select Game Mode");
-
-        VBox dialogVBox = new VBox(10);
-        Button playWithComputer = createStyledButton("Play with Computer");
-        Button playWithHuman = createStyledButton("Play with Human");
-
-        playWithComputer.setOnAction(e -> {
-            isHuman = false;
-            dialog.setResult(false);
-            dialog.close();
-            showLoadingDialog(stage);
-        });
-
-        playWithHuman.setOnAction(e -> {
-            isHuman = true;
-            dialog.setResult(true);
-            dialog.close();
-            showLoadingDialog(stage);
-        });
-
-        dialogVBox.getChildren().addAll(new Text("Choose your game mode:"), playWithComputer, playWithHuman);
-        dialog.getDialogPane().setContent(dialogVBox);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-
-        dialog.showAndWait(); // Show and wait for user action
-    }
-
-
+    // load next view
     private void loadNextView(Stage stage) {
         GameView gameView = new GameView();
-        Scene scene = new Scene(gameView, 570+350, 720);
+        Scene scene = new Scene(gameView, 570 + 350, 720);
         stage.setScene(scene);
     }
 
+    // create a styled button
     public Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setMinWidth(120);

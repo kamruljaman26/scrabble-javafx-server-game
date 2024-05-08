@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TrieNode {
+
     private static final int CHAR_SIZE = 26;
     private boolean isWord;
     private Map<Character, TrieNode> childrens;

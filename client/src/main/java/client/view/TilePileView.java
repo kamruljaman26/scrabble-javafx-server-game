@@ -1,5 +1,7 @@
 package client.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
@@ -9,15 +11,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class TilePileView extends HBox {
 
-    private final ArrayList<TileView> tileViews;
+    private final ObservableList<TileView> tileViews;
     private Button shuffleBtn, sortBtn;
 
     public TilePileView() {
-        this.tileViews = new ArrayList<>();
+        this.tileViews = FXCollections.observableArrayList();
 
+        initPileView();
+    }
+
+    // design and init view
+    private void initPileView() {
         setSpacing(10); // Set spacing between contained elements
         // Style the HBox
         setStyle("-fx-background-color: #BBBBBB; " // Ash color
@@ -26,11 +35,68 @@ public class TilePileView extends HBox {
         // Setting margin around the HBox
         HBox.setMargin(this, new Insets(10, 10, 10, 10)); // Adds a margin outside the HBox
 
+        // create button and handler
         shuffleBtn = createStyledButton("Shuffle");
         sortBtn = createStyledButton("Sort");
+
+        // shuffle button action
+        shuffleBtn.setOnAction(e -> {
+            Collections.shuffle(tileViews);
+            refreshTilePile();
+        });
+
+        // sort button action
+        sortBtn.setOnAction(e -> {
+            tileViews.sort(Comparator.comparingInt(o -> (int) o.getData()));
+            refreshTilePile();
+        });
+
         getChildren().addAll(shuffleBtn, sortBtn);
     }
 
+    public void refreshTilePile() {
+        tileViews.forEach(tileView -> {
+            getChildren().remove(tileView);
+        });
+        tileViews.forEach(tileView -> {
+            getChildren().add(tileView);
+        });
+    }
+
+    // add title on tile pile
+    public void addTile(TileView tileView) {
+        tileView.setOnDragDetected(event -> {
+            /* Allow any transfer mode */
+            tileView.startDragAndDrop(javafx.scene.input.TransferMode.ANY);
+
+            /* Put a string on the drag board */
+            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+            content.putString(tileView.getData() + "," + tileView.getScore());
+            tileView.startDragAndDrop(javafx.scene.input.TransferMode.MOVE).setContent(content);
+
+            event.consume();
+        });
+
+        tileView.setOnDragDone(event -> {
+            /* the drag and drop gesture ended */
+            /* if the data was successfully moved, clear it */
+            if (event.getTransferMode() == javafx.scene.input.TransferMode.MOVE) {
+                removeTile(tileView);
+            }
+
+            event.consume();
+        });
+
+        tileViews.add(tileView);
+        getChildren().add(tileView);
+    }
+
+    public void removeTile(TileView tileView) {
+        tileViews.remove(tileView);
+        getChildren().remove(tileView);
+    }
+
+    // create stylish button
     public Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setMinWidth(40);
@@ -51,37 +117,5 @@ public class TilePileView extends HBox {
                 "-fx-text-fill: white;"));
 
         return button;
-    }
-
-    public void addTile(TileView tileView) {
-        tileViews.add(tileView);
-        tileView.setOnDragDetected(event -> {
-            /* Allow any transfer mode */
-            tileView.startDragAndDrop(javafx.scene.input.TransferMode.ANY);
-
-            /* Put a string on the drag board */
-            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
-            content.putString(tileView.getData() + "");
-            tileView.startDragAndDrop(javafx.scene.input.TransferMode.MOVE).setContent(content);
-
-            event.consume();
-        });
-
-        tileView.setOnDragDone(event -> {
-            /* the drag and drop gesture ended */
-            /* if the data was successfully moved, clear it */
-            if (event.getTransferMode() == javafx.scene.input.TransferMode.MOVE) {
-                removeTile(tileView);
-            }
-
-            event.consume();
-        });
-
-        getChildren().add(tileView);
-    }
-
-    public boolean removeTile(TileView tileView) {
-        tileViews.remove(tileView);
-        return getChildren().remove(tileView);
     }
 }

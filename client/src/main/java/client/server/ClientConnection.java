@@ -1,7 +1,6 @@
 package client.server;
 
 import client.model.Command;
-import client.model.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

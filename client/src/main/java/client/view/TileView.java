@@ -48,7 +48,7 @@ public class TileView extends StackPane {
 
             if (data != '0') {
                 label.setText(String.valueOf(data));
-                background.setFill(Color.BLACK);
+                background.setFill(Color.ORANGE);
             } else {
                 label.setText(" ");
                 background.setFill(BoardView.TileColor.NO);
