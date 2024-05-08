@@ -1,6 +1,5 @@
 package client.view;
 
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,12 +16,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 
-public class Start extends VBox {
+public class StartVIew extends VBox {
 
     private boolean isHuman; // True if playing with human, false if playing with computer
     private Timer timer;
+    private int seconds = 3;
 
-    public Start(Stage stage) {
+    public StartVIew(Stage stage) {
         // Load and set the background image
         BackgroundImage myBI = new BackgroundImage(new Image("background.png", 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -67,8 +67,6 @@ public class Start extends VBox {
         // Timer setup
         timer = new Timer();
         TimerTask task = new TimerTask() {
-            int seconds = 10;
-
             @Override
             public void run() {
                 if (seconds > 0) {
@@ -119,8 +117,8 @@ public class Start extends VBox {
 
 
     private void loadNextView(Stage stage) {
-        Game game = new Game();
-        Scene scene = new Scene(game, 573, 800);
+        GameView gameView = new GameView();
+        Scene scene = new Scene(gameView, 570+350, 720);
         stage.setScene(scene);
     }
 
@@ -136,7 +134,7 @@ public class Start extends VBox {
         // Change style on hover using CSS pseudo-class
         button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: RED; " +
                 "-fx-background-radius: 5; " +
-                "-fx-text-fill: black;"));
+                "-fx-text-fill: white;"));
 
         button.setOnMouseExited(e -> button.setStyle("-fx-background-color: BLACK; " +
                 "-fx-background-radius: 5; " +

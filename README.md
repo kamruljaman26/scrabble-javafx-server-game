@@ -1,1 +1,1 @@
-# scrabble-javafx-server-game
+# scrabble-javafx-server-gameView

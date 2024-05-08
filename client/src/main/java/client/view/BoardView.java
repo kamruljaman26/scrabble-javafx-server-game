@@ -11,9 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
-import static client.view.Board.MULTIPLIER.*;
+import static client.view.BoardView.MULTIPLIER.*;
 
-public class Board extends GridPane {
+public class BoardView extends GridPane {
 
     /**
      * This enum is used to represent the premium tiles which
@@ -39,18 +39,18 @@ public class Board extends GridPane {
         public static Color TILE = Color.valueOf("#000C66");
     }
 
-    private final Tile[][] tilesGrid;
+    private final TileView[][] tilesGrid;
     private final int SIZE = 15; // fixed size for multiplayer board
 
-    public Board() {
-        this.tilesGrid = new Tile[SIZE][SIZE];
+    public BoardView() {
+        this.tilesGrid = new TileView[SIZE][SIZE];
 
         // Creating the board
         for (int row = 0; row < 15; row++) {
             for (int col = 0; col < 15; col++) {
 
                 // Create TileView
-                tilesGrid[row][col] = new Tile(this,
+                tilesGrid[row][col] = new TileView(this,
                         getMultiplier()[row][col],
                         '0',
                         5,
@@ -88,7 +88,7 @@ public class Board extends GridPane {
      * @param col
      * @return Tile
      */
-    public Tile getTile(int row, int col) {
+    public TileView getTile(int row, int col) {
         return tilesGrid[row][col];
     }
 
@@ -98,29 +98,29 @@ public class Board extends GridPane {
      * @param pos
      * @return Tile
      */
-    public Tile getTile(Pos pos) {
+    public TileView getTile(Pos pos) {
         return tilesGrid[pos.getX()][pos.getY()];
     }
 
     /**
      * This function adds tile, given row and column of the board.
      *
-     * @param addTile
+     * @param addTileView
      * @param row
      * @param col
      */
-    public void setTile(Tile addTile, int row, int col) {
-        this.tilesGrid[row][col] = addTile;
+    public void setTile(TileView addTileView, int row, int col) {
+        this.tilesGrid[row][col] = addTileView;
     }
 
     /**
      * This function add tiles, given Pos position of the board.
      *
-     * @param addTile
+     * @param addTileView
      * @param pos
      */
-    public void setTile(Tile addTile, Pos pos) {
-        this.tilesGrid[pos.getX()][pos.getY()] = addTile;
+    public void setTile(TileView addTileView, Pos pos) {
+        this.tilesGrid[pos.getX()][pos.getY()] = addTileView;
     }
 
     /**
@@ -166,13 +166,13 @@ public class Board extends GridPane {
     /**
      * This function checks if the tile, given its position is filled or not.
      *
-     * @param board
+     * @param boardView
      * @param row
      * @param col
      * @return boolean
      */
-    public boolean isFilled(Board board, int row, int col) {
-        if (board.getTile(row, col).getData() == '\0') {
+    public boolean isFilled(BoardView boardView, int row, int col) {
+        if (boardView.getTile(row, col).getData() == '\0') {
             return false;
         }
         return true;
@@ -181,12 +181,12 @@ public class Board extends GridPane {
     /**
      * This function checks if the tile, given its position is filled or not.
      *
-     * @param board
+     * @param boardView
      * @param pos
      * @return boolean
      */
-    public boolean isFilled(Board board, Pos pos) {
-        if (board.getTile(pos).getData() == '\0') {
+    public boolean isFilled(BoardView boardView, Pos pos) {
+        if (boardView.getTile(pos).getData() == '\0') {
             return false;
         }
         return true;

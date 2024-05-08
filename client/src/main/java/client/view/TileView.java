@@ -18,9 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class Tile extends StackPane {
+public class TileView extends StackPane {
 
-    private Board.MULTIPLIER multiplier;
+    private BoardView.MULTIPLIER multiplier;
     private char data;
     private int score;
     private Pos pos;
@@ -29,7 +29,7 @@ public class Tile extends StackPane {
     private Text label;
     private GridPane grid;
 
-    public Tile(GridPane grid, Board.MULTIPLIER multiplier, char data, int score, Pos pos) {
+    public TileView(GridPane grid, BoardView.MULTIPLIER multiplier, char data, int score, Pos pos) {
         this.multiplier = multiplier;
         this.data = data;
         this.score = score;
@@ -44,24 +44,24 @@ public class Tile extends StackPane {
         label.setFont(Font.font("Arial", FontWeight.BOLD, 14)); // Set the font to Arial, bold, with a size of 14
         label.setFill(Color.WHITE);
 
-        if (multiplier.equals(Board.MULTIPLIER.NO)) {
+        if (multiplier.equals(BoardView.MULTIPLIER.NO)) {
 
             if (data != '0') {
                 label.setText(String.valueOf(data));
                 background.setFill(Color.BLACK);
             } else {
                 label.setText(" ");
-                background.setFill(Board.TileColor.NO);
+                background.setFill(BoardView.TileColor.NO);
             }
 
-        } else if (multiplier.equals(Board.MULTIPLIER.TW)) {
-            background.setFill(Board.TileColor.TW);
-        } else if (multiplier.equals(Board.MULTIPLIER.DW)) {
-            background.setFill(Board.TileColor.DW);
-        } else if (multiplier.equals(Board.MULTIPLIER.TL)) {
-            background.setFill(Board.TileColor.TL);
-        } else if (multiplier.equals(Board.MULTIPLIER.DL)) {
-            background.setFill(Board.TileColor.DL);
+        } else if (multiplier.equals(BoardView.MULTIPLIER.TW)) {
+            background.setFill(BoardView.TileColor.TW);
+        } else if (multiplier.equals(BoardView.MULTIPLIER.DW)) {
+            background.setFill(BoardView.TileColor.DW);
+        } else if (multiplier.equals(BoardView.MULTIPLIER.TL)) {
+            background.setFill(BoardView.TileColor.TL);
+        } else if (multiplier.equals(BoardView.MULTIPLIER.DL)) {
+            background.setFill(BoardView.TileColor.DL);
         }
 
         this.getChildren().addAll(background, label);
@@ -131,7 +131,7 @@ public class Tile extends StackPane {
      *
      * @param pos
      */
-    public Tile(Pos pos) {
+    public TileView(Pos pos) {
         this.pos = pos;
     }
 
@@ -140,7 +140,7 @@ public class Tile extends StackPane {
      *
      * @param multiplier
      */
-    public void setMultiplier(Board.MULTIPLIER multiplier) {
+    public void setMultiplier(BoardView.MULTIPLIER multiplier) {
         this.multiplier = multiplier;
     }
 
@@ -158,7 +158,7 @@ public class Tile extends StackPane {
      *
      * @return Multiplier
      */
-    public Board.MULTIPLIER getMultiplier() {
+    public BoardView.MULTIPLIER getMultiplier() {
         return multiplier;
     }
 

@@ -1,20 +1,18 @@
 package client.view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
-public class TilePile extends HBox {
+public class TilePileView extends HBox {
 
-    private final ArrayList<Tile> tiles;
+    private final ArrayList<TileView> tileViews;
     private Button shuffleBtn, sortBtn;
 
-    public TilePile() {
-        this.tiles = new ArrayList<>();
+    public TilePileView() {
+        this.tileViews = new ArrayList<>();
 
         setSpacing(10); // Set spacing between contained elements
         // Style the HBox
@@ -51,13 +49,13 @@ public class TilePile extends HBox {
         return button;
     }
 
-    public void addTile(Tile tile) {
-        tiles.add(tile);
-        getChildren().add(tile);
+    public void addTile(TileView tileView) {
+        tileViews.add(tileView);
+        getChildren().add(tileView);
     }
 
-    public boolean removeTile(Tile tile) {
-        tiles.remove(tile);
-        return getChildren().remove(tile);
+    public boolean removeTile(TileView tileView) {
+        tileViews.remove(tileView);
+        return getChildren().remove(tileView);
     }
 }

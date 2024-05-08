@@ -1,14 +1,17 @@
 package client.view;
 
+import client.model.Player;
 import client.model.Pos;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class Game extends HBox {
+public class GameView extends HBox {
 
-    public Game() {
+    public GameView() {
         // Root layout
         VBox root = new VBox(10);
         root.setBackground(new Background(new BackgroundFill(Color.valueOf("#DDDDDD"),
@@ -17,18 +20,18 @@ public class Game extends HBox {
         /*
          * Board
          */
-        Board board = new Board();
+        BoardView boardView = new BoardView();
 
         /*
          * Create TileBox
          */
-        Tile tile = new Tile(board, Board.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
-        Tile tile2 = new Tile(board, Board.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
+        TileView tileView = new TileView(boardView, BoardView.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
+        TileView tileView2 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
 
         // create and int tile pile
-        TilePile tilesPile = new TilePile();
-        tilesPile.addTile(tile);
-        tilesPile.addTile(tile2);
+        TilePileView tilesPile = new TilePileView();
+        tilesPile.addTile(tileView);
+        tilesPile.addTile(tileView2);
 
         // Control buttons
         HBox controlButtons = new HBox(10);
@@ -39,9 +42,17 @@ public class Game extends HBox {
         Button btnSubmit = createStyledButton("Submit");
         controlButtons.getChildren().addAll(btnResign, btnSkip, btnSwap, btnSubmit);
 
+        // Create Player View
+        //    public Player(String id, String serverIpAddress, int serverPort, int listeningPort, String name) {
+        ObservableList<Player> players = FXCollections.observableArrayList();
+        players.add(new Player("12", "12", 12, 12, "Jhon Due"));
+        players.add(new Player("12", "12", 12, 12, "Lactor"));
+        PlayersView playersView = new PlayersView(players);
+        playersView.appendLog("This os log section");
+
         // Adding to root
-        root.getChildren().addAll(board, tilesPile, controlButtons);
-        getChildren().addAll(root);
+        root.getChildren().addAll(boardView, tilesPile, controlButtons);
+        getChildren().addAll(root, playersView);
     }
 
     public Button createStyledButton(String text) {
