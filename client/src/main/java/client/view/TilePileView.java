@@ -90,8 +90,12 @@ public class TilePileView extends HBox {
         getChildren().add(tileView);
     }
 
+    // todo: fix it
     public void removeAll(){
-        tileViews.forEach(this::removeTile);
+        tileViews.forEach(tile->{
+            getChildren().remove(tile);
+        });
+        tileViews.clear();
     }
 
     // remove tile from view and list
