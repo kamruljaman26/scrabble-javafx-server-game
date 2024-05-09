@@ -1,10 +1,15 @@
 package client.view;
 
+import client.model.Command;
+import client.model.CommandType;
+import client.model.Player;
+import client.server.ClientConnection;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -13,22 +18,102 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import javafx.application.Platform;
+import util.Util;
 
 public class StartVIew extends VBox {
 
     private static boolean isHuman; // True if playing with human, false if playing with computer
     private Timer timer;
     private int seconds = 3;
+    private Player player;
+
+    private volatile ClientConnection handler;
 
     // starting point
     public StartVIew(Stage stage) {
         initStartView(stage);
-
+        initPlayerView(); // init player with details
     }
+
+    private void initPlayerView() {
+        // Create a new TextInputDialog
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Player Registration");
+        dialog.setHeaderText("Enter Player Name");
+        dialog.setContentText("Name:");
+
+        // Customizing the dialog button types
+        dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Show the dialog and capture the result
+        Optional<String> result = dialog.showAndWait();
+
+        // Process the result
+        result.ifPresent(name -> {
+            if (name.trim().isEmpty()) {
+                // Handle the case where the name is empty
+                System.out.println("Player name cannot be empty.");
+                initPlayerView();  // Re-invoke the dialog if input was invalid
+            } else {
+                // Save the valid input to the playerName variable
+                player = new Player(name);
+                System.out.println("Player Name Set: " + player);  // Optional: for debugging
+
+                // create client server using separate thread
+                Thread thread = new Thread(() -> {
+                    try {
+                        createClient();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                thread.start();
+            }
+        });
+    }
+
+    /**
+     * create and init client server, read messages
+     * @throws IOException
+     */
+    private void createClient() throws IOException, ClassNotFoundException {
+
+        handler = new ClientConnection(Util.IP_ADDRESS, Util.DEFAULT_PORT);
+        handler.sendObject(player);
+        Command command = handler.readCommand();
+        System.out.println(command);
+
+//         read message
+        Thread readMessage = new Thread(() -> {
+            while (true) {
+                try {
+                    // read the message sent to this client
+                    Command cmd = handler.readCommand();
+                    System.out.println("READ MESSAGE WHILE(" + cmd.toString() + "):: " + cmd);
+
+                    // read notification
+                    if (cmd.getMessageType().equals(CommandType.NEW_MATCH_REQUEST_COMPUTER)) {
+                        System.out.println(cmd);
+                    }
+
+
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        readMessage.start();
+    }
+
 
     // init design part
     private void initStartView(Stage stage) {

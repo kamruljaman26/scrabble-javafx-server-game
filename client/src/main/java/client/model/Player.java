@@ -1,7 +1,10 @@
 package client.model;
 
+import util.Util;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 // a pojo player class
 public class Player implements Serializable {
@@ -12,6 +15,14 @@ public class Player implements Serializable {
     private int serverPort;
     private int listeningPort;
 
+    public Player(String name) {
+        id = createUniqueId();
+        this.name = name;
+        serverPort = Util.DEFAULT_PORT;
+        serverIpAddress = Util.IP_ADDRESS.getHostAddress();
+        listeningPort = 9001;
+    }
+
     public Player(String id, String serverIpAddress, int serverPort, int listeningPort, String name) {
         this.id = id;
         this.name = name;
@@ -19,6 +30,18 @@ public class Player implements Serializable {
         this.serverPort = serverPort;
         this.listeningPort = listeningPort;
     }
+
+    private String createUniqueId() {
+        // Generate a random UUID
+        UUID uuid = UUID.randomUUID();
+
+        // Convert UUID to string and replace hyphens
+        String fullId = uuid.toString().replace("-", "");
+
+        // Return a substring of the first 12 characters
+        return fullId.substring(0, 12);
+    }
+
 
     public String getId() {
         return id;

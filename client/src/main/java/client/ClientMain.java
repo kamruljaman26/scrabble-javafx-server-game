@@ -5,13 +5,13 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class ClientMain extends Application {
 
     private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) {
-        Main.stage = primaryStage;
+        ClientMain.stage = primaryStage;
 
         // Show stage
         Scene scene = new Scene(new StartVIew(stage), 600, 600);

@@ -17,12 +17,6 @@ public class ClientConnection {
     private final ObjectOutputStream outputStream;
     private final ObjectInputStream inputStream;
 
-    public ClientConnection(Socket socket) throws IOException {
-        this.socket = socket;
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
-    }
-
     public ClientConnection(InetAddress address, int port) throws IOException {
         this.socket = new Socket(address, port);
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -45,12 +39,12 @@ public class ClientConnection {
         socket.close();
     }
 
-    public void sendMessage(Command message) throws IOException {
-        outputStream.writeObject(message);
+    public void sendCommand(Command command) throws IOException {
+        outputStream.writeObject(command);
         outputStream.flush();
     }
 
-    public Command readMessage() throws IOException, ClassNotFoundException {
+    public Command readCommand() throws IOException, ClassNotFoundException {
         return (Command) inputStream.readObject();
     }
 

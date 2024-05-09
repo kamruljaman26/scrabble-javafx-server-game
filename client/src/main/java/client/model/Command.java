@@ -49,12 +49,13 @@ public class Command implements Serializable {
         this.message = message;
     }
 
+
     @Override
     public String toString() {
-        return "Message{" +
+        return "Command{" +
                 "sender=" + sender +
                 ", receiver=" + receiver +
-                ", messageType=" + commandType +
+                ", commandType=" + commandType +
                 ", message='" + message + '\'' +
                 '}';
     }

@@ -2,7 +2,6 @@ package server;
 
 import client.model.Player;
 import util.Util;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -40,7 +39,6 @@ public class CommandServer implements Runnable {
             while (true) {
                 // accept clients
                 socket = serverSocket.accept();
-                System.out.println("");
                 System.out.println("\n ---- Socket Accepted ---- ");
 
                 // read player and in player list
@@ -67,11 +65,11 @@ public class CommandServer implements Runnable {
                     clients.put(player.getId(), thread);
                     outputStreams.put(player.getId(), objectOutputStream);
 
-                    System.out.println("New Member Connected In Server: " + player);
+                    System.out.println("New Player Connected In Server: " + player);
 
                     thread.start();
                 } else {
-                    System.out.println("IN SERVER: Member is null.");
+                    System.out.println("IN SERVER: Player is null.");
                 }
             }
         } catch (Exception e) {
