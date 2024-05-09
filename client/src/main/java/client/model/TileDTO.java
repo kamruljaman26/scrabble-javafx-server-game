@@ -2,6 +2,9 @@ package client.model;
 
 import client.view.BoardView;
 
+/**
+ * This class represents a Data Transfer Object (DTO) for a tile on the board.
+ */
 public class TileDTO {
 
     private BoardView.MULTIPLIER multiplier;

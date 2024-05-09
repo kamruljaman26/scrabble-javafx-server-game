@@ -24,6 +24,10 @@ import java.util.TimerTask;
 import javafx.application.Platform;
 import util.Util;
 
+/**
+ * JavaFX view for the initial setup and player registration, allowing the player to choose between playing with a computer or another human.
+ * The view includes buttons for starting the game and exiting, as well as a message label.
+ */
 public class StartVIew extends VBox {
 
     private static boolean isHuman; // True if playing with human, false if playing with computer

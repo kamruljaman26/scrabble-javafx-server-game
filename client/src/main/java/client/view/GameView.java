@@ -13,6 +13,9 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * This class represents the game view, including the board, players, and control buttons.
+ */
 public class GameView extends HBox {
 
     private final TilePileView tilePileView;

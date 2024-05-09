@@ -9,6 +9,10 @@ import javafx.scene.layout.HBox;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * JavaFX view representing the tile pile, which contains a collection of TileViews.
+ * The view allows shuffling and sorting of the tiles, as well as adding and removing tiles.
+ */
 public class TilePileView extends HBox {
 
     private final ObservableList<TileView> tileViews;

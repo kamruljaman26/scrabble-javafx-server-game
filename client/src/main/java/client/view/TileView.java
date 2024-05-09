@@ -18,6 +18,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * This class represents the individual tile on the board which contains the
+ * character, their position, points of the tile, and premium points.
+ */
 public class TileView extends StackPane {
 
     private BoardView.MULTIPLIER multiplier;

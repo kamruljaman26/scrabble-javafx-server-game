@@ -7,6 +7,9 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents the main server, responsible for managing client connections and gameplay.
+ */
 public class GamePlayServer extends Thread {
 
     // clients and membership manager

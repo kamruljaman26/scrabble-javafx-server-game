@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.Map;
 
 /**
- * A multithreading client handler to manage communication between different clients
+ * A multithreading client handler to manage communication between different clients.
  */
 public class ServerClientHandler implements Runnable {
 

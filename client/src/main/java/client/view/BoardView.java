@@ -16,6 +16,9 @@ import java.util.List;
 
 import static client.view.BoardView.MULTIPLIER.*;
 
+/**
+ * This class represents the board used for placing tiles (letters) to play the game.
+ */
 public class BoardView extends GridPane {
 
     /**

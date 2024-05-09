@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-// a pojo player class
+/**
+ * A Plain Old Java Object (POJO) representing a player.
+ */
 public class Player implements Serializable {
 
     private String id;

@@ -12,6 +12,12 @@ package client.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents a Trie data structure, which is a node
+ * holding character data and has edges to an arbitrary number of children.
+ * The isWord node represents the current path is a complete word, while
+ * something that is not a isWord node means the path is not complete.
+ */
 public class TrieNode {
 
     private static final int CHAR_SIZE = 26;

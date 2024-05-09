@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Map;
 
 /**
- * Will create server socket
+ * This class represents the server, responsible for handling client connections and managing players.
  */
 public class CommandServer implements Runnable {
 

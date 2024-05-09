@@ -6,6 +6,9 @@ package client.model;
 
 import java.util.Objects;
 
+/**
+ * This class represents the position of a tile.
+ */
 public class Pos {
 
     private int x;

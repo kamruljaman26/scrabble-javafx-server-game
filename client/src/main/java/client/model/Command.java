@@ -2,13 +2,13 @@ package client.model;
 
 import java.io.Serializable;
 
-// a pojo message object
+// A Plain Old Java Object (POJO) representing a message command
 public class Command implements Serializable {
 
-    private Player sender;
-    private Player receiver;
-    private CommandType commandType;
-    private String message;
+    private Player sender; // The player who sent the command
+    private Player receiver; // The player who should receive the command
+    private CommandType commandType; // The type of command (e.g., SEND_MESSAGE, START_GAME)
+    private String message; // The content of the command
 
     public Command(Player sender, Player receiver, CommandType commandType, String message) {
         this.sender = sender;
@@ -49,7 +49,7 @@ public class Command implements Serializable {
         this.message = message;
     }
 
-
+    // Overriding toString() method to provide a string representation of the command object
     @Override
     public String toString() {
         return "Command{" +

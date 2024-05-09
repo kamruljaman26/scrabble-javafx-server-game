@@ -11,6 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
+/**
+ * This class is responsible for creating a dictionary using
+ * a Trie data structure. It is used by calling the constructor
+ * and passing the file name containing all the valid words.
+ */
 public class Dictionary {
 
     private TrieNode root;

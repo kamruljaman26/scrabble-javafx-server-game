@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// used a singleton pattern so there will only one membership manager object.
+
+/**
+ * This class manages the players connected to the server.
+ * It uses a singleton pattern to ensure only one instance of the manager exists.
+ */
 public class PlayerManager {
 
     private static volatile Map<String, Player> playerMap = new HashMap<>();
