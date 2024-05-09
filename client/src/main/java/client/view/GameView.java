@@ -102,6 +102,7 @@ public class GameView extends HBox {
      * Handle Swap button action
      */
     private void swapButtonAction() {
+        tilePileView.removeAll();
         Collections.shuffle(tileViews);
         tileViews.forEach(tilePileView::addTile);
         addDemoData();
