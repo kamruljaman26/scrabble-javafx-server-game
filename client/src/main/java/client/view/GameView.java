@@ -10,25 +10,52 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class GameView extends HBox {
 
-    private final TilePileView tilesPile;
+    private final TilePileView tilePileView;
     private final ObservableList<Player> players;
     private final PlayersView playersView;
     private final BoardView boardView;
     private ClientConnection connection;
+    private ArrayList<TileView> tileViews;
 
     public GameView(ClientConnection connection) {
         // init views
         this.connection = connection;
         boardView = new BoardView();
         players = FXCollections.observableArrayList();
-        tilesPile = new TilePileView();
+        tilePileView = new TilePileView();
+        createPile();
+
         addDemoData();
         playersView = new PlayersView(players);
 
         initGameViewLayout();
     }
+
+    public void createPile() {
+        // Frequencies and scores for letters A-Z
+        int[] scores = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+        int[] quantities = {9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
+        char[] letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+
+        // Create tiles based on the quantities and scores
+        tileViews = new ArrayList<>();
+        for (int i = 0; i < scores.length; i++) {
+            for (int j = 0; j < quantities[i]; j++) {
+                TileView tile = new TileView(boardView, BoardView.MULTIPLIER.NO, letters[i],
+                        scores[i], new Pos(2, 2));
+                tileViews.add(tile);
+            }
+        }
+
+        Collections.shuffle(tileViews);
+        tileViews.forEach(tilePileView::addTile);
+    }
+
 
     // init layout and button view and handler
     private void initGameViewLayout() {
@@ -52,7 +79,7 @@ public class GameView extends HBox {
         HBox controlButtons = new HBox(10);
         controlButtons.setAlignment(javafx.geometry.Pos.CENTER);
         controlButtons.getChildren().addAll(btnResign, btnSkip, btnSwap, btnSubmit);
-        root.getChildren().addAll(boardView, tilesPile, controlButtons);
+        root.getChildren().addAll(boardView, tilePileView, controlButtons);
         getChildren().addAll(root, playersView);
     }
 
@@ -61,6 +88,7 @@ public class GameView extends HBox {
      */
     private void resignButtonAction() {
         //todo
+        System.exit(0);
     }
 
     /**
@@ -74,6 +102,8 @@ public class GameView extends HBox {
      * Handle Swap button action
      */
     private void swapButtonAction() {
+        Collections.shuffle(tileViews);
+        tileViews.forEach(tilePileView::addTile);
         addDemoData();
     }
 
@@ -88,16 +118,10 @@ public class GameView extends HBox {
         players.add(new Player("12", "12", 12, 12, "Jhon Due"));
         players.add(new Player("12", "12", 12, 12, "Lactor"));
 
-        if(playersView != null)
+        if (playersView != null)
             playersView.appendLog("This os log section");
 
-        /*
-         * Create TileBox
-         */
-        TileView tileView = new TileView(boardView, BoardView.MULTIPLIER.NO, 'A', 5, new Pos(4, 4));
-        TileView tileView2 = new TileView(boardView, BoardView.MULTIPLIER.NO, 'B', 5, new Pos(4, 4));
-        tilesPile.addTile(tileView);
-        tilesPile.addTile(tileView2);
+
     }
 
     // create stylish button

@@ -87,11 +87,7 @@ public class ServerClientHandler implements Runnable {
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Exception while sending message or");
                 System.out.println(player.getName() + " disconnected from server.");
-                try {
-                    socket.close();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                System.exit(0);
             }
         }
     }

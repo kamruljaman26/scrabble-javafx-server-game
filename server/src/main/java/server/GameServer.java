@@ -3,9 +3,12 @@ package server;
 
 
 import client.model.Command;
+import client.model.TileDTO;
+import client.view.BoardView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

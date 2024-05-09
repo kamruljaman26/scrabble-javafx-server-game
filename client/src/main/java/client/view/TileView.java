@@ -39,6 +39,12 @@ public class TileView extends StackPane {
         initLayoutView();
     }
 
+    public TileView(BoardView.MULTIPLIER multiplier, char data, int score) {
+        this.multiplier = multiplier;
+        this.data = data;
+        this.score = score;
+    }
+
     // init layout view
     private void initLayoutView() {
         background = new Rectangle(35, 35);

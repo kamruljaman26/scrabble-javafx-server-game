@@ -16,7 +16,6 @@ public class TilePileView extends HBox {
 
     public TilePileView() {
         this.tileViews = FXCollections.observableArrayList();
-
         initPileView();
     }
 
@@ -93,7 +92,6 @@ public class TilePileView extends HBox {
 
     // remove tile from view and list
     public void removeTile(TileView tileView) {
-
         tileViews.remove(tileView);
         getChildren().remove(tileView);
     }
