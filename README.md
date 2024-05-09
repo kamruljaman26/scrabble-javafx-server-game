@@ -7,8 +7,9 @@ This project extends a basic two-player Scrabble game into a flexible, networked
 ## Getting Started
 
 ### Prerequisites
-- Java JDK 17
+- Java JDK 17 or later
 - Maven (for dependency management and building the project)
+- IntelliJ IDEA (recommended for running the project)
 
 ### Installation
 1. Clone the repository or download the project files.
@@ -17,18 +18,21 @@ This project extends a basic two-player Scrabble game into a flexible, networked
    ```bash
    mvn clean install
    ```
+   Alternatively, you can build the project directly from IntelliJ IDEA by using the "Import Project" feature and selecting the project's `pom.xml`.
 
 ### Running the Server
-To start the game server, run the following command from the project's root directory:
-```bash
-Run the ServerMain.java file from IDE
-```
+To start the game server:
+- Open the project in IntelliJ IDEA.
+- Navigate to the `ServerMain.java` file within the `server` module.
+- Right-click on the file and select `Run 'ServerMain.main()'`.
 
 ### Running a Client
-To connect a client to the server, use the following command:
-```bash
-Run the ClientMain.java file from IDE
-```
+To connect a client to the server:
+- Enable multiple instance from IDE setting.
+- Open a new instance of IntelliJ IDEA or use the same instance to open a new project window.
+- Navigate to the `ClientMain.java` file within the `client` module.
+- Right-click on the file and select `Run 'ClientMain.main()'`.
+- Repeat the steps for additional clients as needed.
 
 ## Game Play
 Players can join an existing table or create a new one upon connecting to the server. The game adheres to standard Scrabble rules, modified to accommodate multiple players. The user interface is implemented using JavaFX, offering a graphical representation of the game board and interactive elements.
