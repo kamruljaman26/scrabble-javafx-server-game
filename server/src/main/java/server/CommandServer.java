@@ -1,7 +1,10 @@
 package server;
 
+import client.model.Command;
+import client.model.CommandType;
 import client.model.Player;
 import util.Util;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -37,7 +40,7 @@ public class CommandServer implements Runnable {
             System.out.println("Server started on IP: " + Util.IP_ADDRESS);
 
             while (true) {
-                // accept clients
+                // accept a new player client
                 socket = serverSocket.accept();
                 System.out.println("\n ---- Socket Accepted ---- ");
 
@@ -64,6 +67,11 @@ public class CommandServer implements Runnable {
                     // add in clients and streams
                     clients.put(player.getId(), thread);
                     outputStreams.put(player.getId(), objectOutputStream);
+
+                    // send a success message.
+                    objectOutputStream.writeObject(
+                            new Command(null, player, CommandType.CONNECTED_WTH_SERVER, "")
+                    );
 
                     System.out.println("New Player Connected In Server: " + player);
 

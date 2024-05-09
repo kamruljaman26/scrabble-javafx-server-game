@@ -6,24 +6,19 @@ import client.model.Player;
 import client.server.ClientConnection;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
-
 import javafx.application.Platform;
 import util.Util;
 
@@ -33,6 +28,7 @@ public class StartVIew extends VBox {
     private Timer timer;
     private int seconds = 3;
     private Player player;
+    private Label msgLbl = new Label();
 
     private volatile ClientConnection handler;
 
@@ -83,35 +79,17 @@ public class StartVIew extends VBox {
 
     /**
      * create and init client server, read messages
-     * @throws IOException
      */
     private void createClient() throws IOException, ClassNotFoundException {
 
         handler = new ClientConnection(Util.IP_ADDRESS, Util.DEFAULT_PORT);
         handler.sendObject(player);
+
+        // read a message from server
         Command command = handler.readCommand();
-        System.out.println(command);
-
-//         read message
-        Thread readMessage = new Thread(() -> {
-            while (true) {
-                try {
-                    // read the message sent to this client
-                    Command cmd = handler.readCommand();
-                    System.out.println("READ MESSAGE WHILE(" + cmd.toString() + "):: " + cmd);
-
-                    // read notification
-                    if (cmd.getMessageType().equals(CommandType.NEW_MATCH_REQUEST_COMPUTER)) {
-                        System.out.println(cmd);
-                    }
-
-
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        readMessage.start();
+        if (command != null) {
+            msgLbl.setText(player.getName() + " you are successfully connected with server.");
+        }
     }
 
 
@@ -132,7 +110,8 @@ public class StartVIew extends VBox {
         exitButton.setOnAction(e -> Platform.exit());
 
         // Add buttons to VBox
-        this.getChildren().addAll(startButton, exitButton);
+        msgLbl.setTextFill(Color.LIGHTYELLOW);
+        this.getChildren().addAll(startButton, exitButton, msgLbl);
         this.setSpacing(10);  // Set spacing between buttons
         this.setAlignment(Pos.CENTER);
     }
