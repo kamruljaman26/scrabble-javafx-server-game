@@ -2,6 +2,7 @@ package client.view;
 
 import client.model.Player;
 import client.model.Pos;
+import client.server.ClientConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,9 +16,11 @@ public class GameView extends HBox {
     private final ObservableList<Player> players;
     private final PlayersView playersView;
     private final BoardView boardView;
+    private ClientConnection connection;
 
-    public GameView() {
+    public GameView(ClientConnection connection) {
         // init views
+        this.connection = connection;
         boardView = new BoardView();
         players = FXCollections.observableArrayList();
         tilesPile = new TilePileView();

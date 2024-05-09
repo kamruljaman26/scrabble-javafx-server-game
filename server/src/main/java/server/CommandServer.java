@@ -69,9 +69,10 @@ public class CommandServer implements Runnable {
                     outputStreams.put(player.getId(), objectOutputStream);
 
                     // send a success message.
-                    objectOutputStream.writeObject(
-                            new Command(null, player, CommandType.CONNECTED_WTH_SERVER, "")
-                    );
+                    Command command = new Command(null, player, CommandType.CONNECTED_WTH_SERVER, "");
+                    objectOutputStream.writeObject(command);
+                    objectOutputStream.flush();
+                    System.out.println("Send respond to client.");
 
                     System.out.println("New Player Connected In Server: " + player);
 

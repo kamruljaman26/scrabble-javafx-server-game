@@ -15,10 +15,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javafx.application.Platform;
 import util.Util;
 
@@ -29,11 +31,13 @@ public class StartVIew extends VBox {
     private int seconds = 3;
     private Player player;
     private Label msgLbl = new Label();
+    private Stage stage;
 
     private volatile ClientConnection handler;
 
     // starting point
     public StartVIew(Stage stage) {
+        this.stage = stage;
         initStartView(stage);
         initPlayerView(); // init player with details
     }
@@ -65,11 +69,17 @@ public class StartVIew extends VBox {
                 // create client server using separate thread
                 Thread thread = new Thread(() -> {
                     try {
-                        createClient();
-                    } catch (IOException e) {
+                        handler = new ClientConnection(Util.IP_ADDRESS, Util.DEFAULT_PORT);
+                        handler.sendObject(player);
+
+                        // read a message from server
+                        Command command = handler.readCommand();
+                        if (command.getMessageType().equals(CommandType.CONNECTED_WTH_SERVER)) {
+                            createSuccessMsg();
+                        }
+
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
                     }
                 });
                 thread.start();
@@ -77,19 +87,11 @@ public class StartVIew extends VBox {
         });
     }
 
-    /**
-     * create and init client server, read messages
-     */
-    private void createClient() throws IOException, ClassNotFoundException {
-
-        handler = new ClientConnection(Util.IP_ADDRESS, Util.DEFAULT_PORT);
-        handler.sendObject(player);
-
-        // read a message from server
-        Command command = handler.readCommand();
-        if (command != null) {
+    private void createSuccessMsg() {
+        // Assuming 'msgLabel' is a Label defined in your class
+        Platform.runLater(() -> {
             msgLbl.setText(player.getName() + " you are successfully connected with server.");
-        }
+        });
     }
 
 
@@ -131,6 +133,7 @@ public class StartVIew extends VBox {
             dialog.setResult(false);
             dialog.close();
             showLoadingDialog(stage);
+            //todo: implement AI
         });
 
         playWithHuman.setOnAction(e -> {
@@ -138,6 +141,9 @@ public class StartVIew extends VBox {
             dialog.setResult(true);
             dialog.close();
             showLoadingDialog(stage);
+
+            // start match
+            requestGameplayWithHuman();
         });
 
         dialogVBox.getChildren().addAll(new Text("Choose your game mode:"), playWithComputer, playWithHuman);
@@ -145,6 +151,31 @@ public class StartVIew extends VBox {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
 
         dialog.showAndWait(); // Show and wait for user action
+    }
+
+    /**
+     * Request gameplay with server if connection match with another player game will start
+     */
+    private void requestGameplayWithHuman() {
+        Thread thread = new Thread(() -> {
+            try {
+                System.out.println("Sending New Match Request to server.");
+                // request server for new game
+                Command reqCommand = new Command(player, null, CommandType.NEW_MATCH_REQUEST_HUMAN, "");
+                handler.sendObject(reqCommand);
+
+                // read a message from server
+                System.out.println("Received Status from server, starting the game.");
+                Command resCommand = handler.readCommand();
+                System.out.println(resCommand);
+                if (resCommand.getMessageType().equals(CommandType.MATCH_START)) {
+                    Platform.runLater(this::loadNextView);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Invalid Request");
+            }
+        });
+        thread.start();
     }
 
     // show loading screen
@@ -182,7 +213,7 @@ public class StartVIew extends VBox {
                     timer.cancel();
                     Platform.runLater(() -> {
                         dialog.close(); // Close the dialog when loading is complete
-                        loadNextView(stage); // Load next view
+//                        loadNextView(stage); // Load next view
                     });
                 }
             }
@@ -191,8 +222,8 @@ public class StartVIew extends VBox {
     }
 
     // load next view
-    private void loadNextView(Stage stage) {
-        GameView gameView = new GameView();
+    private void loadNextView() {
+        GameView gameView = new GameView(handler);
         Scene scene = new Scene(gameView, 570 + 350, 720);
         stage.setScene(scene);
     }

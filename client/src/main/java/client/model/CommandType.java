@@ -8,6 +8,6 @@ public enum CommandType {
     WORD_REQUEST,
     WORD_RESPONSE,
     CONNECTED_WTH_SERVER,
-    WORD_BROADCAST
+    MATCH_START, WORD_BROADCAST
 }
 

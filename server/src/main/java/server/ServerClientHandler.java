@@ -57,15 +57,27 @@ public class ServerClientHandler implements Runnable {
 
                 if (receivedCommand != null) {
 
-                    System.out.printf("Message Server: (to: , %s from: %s, Msg: %s\n",
-                            receivedCommand.getReceiver(), receivedCommand.getSender(),
+                    System.out.printf("Message Server: (Type: , %s from: %s, Msg: %s\n",
+                            receivedCommand.getMessageType(), receivedCommand.getSender(),
                             receivedCommand.getMessage());
 
-                    /**
+                    /*
                      * TODO: HANDLE MESSAGE TYPE
                      */
-                    if (receivedCommand.getMessageType().equals(CommandType.NEW_MATCH_REQUEST_COMPUTER)) {
+                    if (receivedCommand.getMessageType().equals(CommandType.NEW_MATCH_REQUEST_HUMAN)) {
+                        System.out.println(outputStreams.values().size());
+                        if (outputStreams.values().size() >= 2) {
+                            try {
+                                Command command = new Command(null, player, CommandType.MATCH_START, "");
+                                outputStream.writeObject(command);
+                                outputStream.flush();
 
+                                System.out.println(command);
+                                System.out.println("Start Match Request to player" + player);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
 
                 } else {
@@ -73,9 +85,13 @@ public class ServerClientHandler implements Runnable {
                 }
 
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Exception while sending message");
-                e.printStackTrace();
-                System.exit(0);
+                System.out.println("Exception while sending message or");
+                System.out.println(player.getName() + " disconnected from server.");
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
